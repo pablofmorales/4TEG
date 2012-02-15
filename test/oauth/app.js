@@ -44,6 +44,10 @@ app.get('/auth', function(req, res){
 
 });
 
+app.get('/hi', function( req, res ) {
+    res.end('hola');
+}); 
+
 app.get('/ok', function(req, res, next){
     foursquare.getAccessToken({
         code: req.query.code
