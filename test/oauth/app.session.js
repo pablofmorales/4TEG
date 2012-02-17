@@ -86,6 +86,20 @@ app.get('/user', loginRequired, function (req, res, next) {
     })
 });
 
+app.get('/explore', loginRequired, function (req, res, next) {
+    var lat = req.query.lat;
+    var lng = req.query.lng;
+    var params = {};
+    foursquare.Venues.explore(lat, lng, params, req.session.accessToken,
+        function (error, data) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.send(data);
+            }
+    })
+});
+
 app.get('/')
 
 app.listen(3000);
