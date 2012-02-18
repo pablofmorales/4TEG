@@ -1,0 +1,8 @@
+include layout
+
+block content
+    body
+        ul(data-role="listview")
+            each item in data.items
+                li
+                    a(href="/checkin?lat=#{item.venue.location.lat}&lng=#{item.venue.location.lng}") #{item.venue.name}

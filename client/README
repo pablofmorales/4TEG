@@ -1,0 +1,2 @@
+* Los archivos de client fueron movidos a server/public
+* Dejo acá solo index.html y login.html porque en server fueron transformados a jade.

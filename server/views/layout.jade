@@ -1,6 +1,11 @@
-!!!
+!!! 5
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+    head
+        title!=title
+        link(rel="stylesheet", href="/stylesheets/themes/4teg.min.css")
+        link(rel="stylesheet", href="http://code.jquery.com/mobile/1.0.1/jquery.mobile.structure-1.0.1.min.css")
+        block scripts
+            script(src="http://code.jquery.com/jquery-1.6.4.min.js")
+            script(src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js")
+
+    block content
