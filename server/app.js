@@ -6,7 +6,11 @@ var config = {
     secrets: {
         clientId:     "YEQEXVPVKYHABGZ51TIRHMUB2OS5TDK4M4ODCVTBGZR1IZI3",
         clientSecret: "CQG1WGHH54X1AHTGU2CBZM0DTJHWGOAOVEP0XRXNX45T4T4H",
-        redirectUrl:  "http://4teg.zubte.com:3000/ok"
+        redirectUrl:  "http://4teg.zubte.com:3000/foursquare"
+
+        //clientId:     "ER01KARUFNZGAFV330TW2QYZXOK42C1P1M1NXBT0EG2TE2G4",
+        //clientSecret: "M5LD5XHRTNQ0UJLYONDBRURMSQHXQ4FELAEXOHF0DLKRGQFP",
+        //redirectUrl:  "http://4teg.calcifer.com.ar/foursquare"
     }
 }
 
@@ -69,7 +73,7 @@ app.get('/logout', function (req, res) {
     res.redirect('/');
 });
 
-app.get('/ok', function (req, res, next) {
+app.get('/foursquare', function (req, res, next) {
     foursquare.getAccessToken({
         code: req.query.code
     }, function (error, accessToken) {
@@ -101,7 +105,19 @@ app.get('/explore', loginRequired, function (req, res, next) {
             if (error) {
                 res.send(error);
             } else {
-                res.render('explore', { title: 'Checkin', data: data.groups[0]  });
+                res.render('explore', { title: 'Explore', data: data.groups[0]  });
+            }
+    })
+});
+
+app.get('/venue', loginRequired, function (req, res, next) {
+    var id = req.query.id;
+    foursquare.Venues.getVenue(id, req.session.accessToken,
+        function (error, data) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.render('venue', { title: 'Venue', data: data });
             }
     })
 });

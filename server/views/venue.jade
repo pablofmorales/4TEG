@@ -1,0 +1,48 @@
+include layout
+
+block content
+    body
+        div(data-role="header")
+            h1 4TEG Venue
+
+        div
+            div(style="padding:0 10px 10px 10px;float:left")
+                img(src="#{data.venue.categories[0].icon.prefix}88.png")
+            div(style="margin-left:108px")
+                h3(style="margin-bottom:.5em") #{data.venue.name}
+                if data.venue.location
+                    p(style="margin:0") #{data.venue.location.address}
+                    p(style="margin-top:0") #{data.venue.location.city}
+
+        div(data-role="collapsible-set", style="clear:both")
+            div(data-role="collapsible")
+                h3 Location
+                each value, key in data.venue.location
+                    p
+                        strong #{key}: 
+                        #{value}
+
+            if data.venue.stats
+                div(data-role="collapsible")
+                    h3 Stats
+                    each value, key in data.venue.stats
+                        p
+                            strong #{key}: 
+                            #{value}
+
+            if data.venue.mayor && data.venue.mayor.user
+                div(data-role="collapsible")
+                    h3 Mayor (#{data.venue.mayor.count})
+                    each value, key in data.venue.mayor.user
+                        p
+                            strong #{key}: 
+                            #{value}
+
+            if data.venue.tips.count
+                div(data-role="collapsible")
+                    h3 Tips (#{data.venue.tips.count})
+                    each group in data.venue.tips.groups
+                        each item in group.items
+                            p
+                                strong #{item.user.firstName} #{item.user.lastName}: 
+                                #{item.text}

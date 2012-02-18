@@ -2,7 +2,10 @@ include layout
 
 block content
     body
+        div(data-role="header")
+            h1 4TEG Explore
+
         ul(data-role="listview")
             each item in data.items
                 li
-                    a(href="/checkin?lat=#{item.venue.location.lat}&lng=#{item.venue.location.lng}") #{item.venue.name}
+                    a(href="/venue?id=#{item.venue.id}") #{item.venue.name}
