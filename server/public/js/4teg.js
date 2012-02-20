@@ -42,6 +42,7 @@ function initialize() {
     } else {
         alert('The geolocation is not working');
     }
+
 }
 
 function checkin(url) {
@@ -49,3 +50,8 @@ function checkin(url) {
         location.href = url + '?lat=' + latitude + '&lng=' + longitude;
     }
 }
+
+function confirmCheckin(){
+    location.href="/checkin?id=" +  '4b72ea29f964a520468f2de3';
+}
+

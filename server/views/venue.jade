@@ -1,5 +1,7 @@
 include layout
-
+block scripts append
+    script(src="/js/4teg.js")
+    
 block content
     body
         div(data-role="header")
@@ -13,7 +15,10 @@ block content
                 if data.venue.location
                     p(style="margin:0") #{data.venue.location.address}
                     p(style="margin-top:0") #{data.venue.location.city}
+                    input.ui-shadow(type="button", data-icon="star", data-role="button", value="Check-in!", onclick="confirmCheckin()")
+                    input(type="hidden", value="4b3687b1f964a5206d3725e3", id="venueId")
 
+            
         div(data-role="collapsible-set", style="clear:both")
             div(data-role="collapsible")
                 h3 Location
@@ -21,7 +26,7 @@ block content
                     p
                         strong #{key}: 
                         #{value}
-
+            
             if data.venue.stats
                 div(data-role="collapsible")
                     h3 Stats

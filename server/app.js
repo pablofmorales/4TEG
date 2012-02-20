@@ -110,6 +110,20 @@ app.get('/explore', loginRequired, function (req, res, next) {
     })
 });
 
+app.get('/checkin', loginRequired, function (req, res, next) {
+    var venueId = req.query.id;
+    
+    var params = {};
+    foursquare.Checkin.add(venueId, params, req.session.accessToken,
+        function (error, data) {
+            if (error) {
+                res.send(error);
+            } else {
+                res.render('checkinResult', { title: 'Checkin Result', data: data.groups[0]  });
+            }
+    })
+});
+
 app.get('/venue', loginRequired, function (req, res, next) {
     var id = req.query.id;
     foursquare.Venues.getVenue(id, req.session.accessToken,
