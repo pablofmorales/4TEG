@@ -1,0 +1,19 @@
+include layout
+block scripts append
+    script(src="/js/4teg.js")
+    
+block content
+    body
+        div(data-role="header")
+            h1 4TEG User
+
+        div
+            div(style="padding:0 10px 10px 10px;float:left")
+                img(src="#{data.user.photo}")
+            div(style="margin-left:108px")
+                h2(style="margin-bottom:.5em") #{data.user.firstName} #{data.user.lastName}
+                span #{data.user.homeCity}
+                ul
+                  li Badges: #{data.user.badges.count}
+                  li Mayorships: #{data.user.mayorships.count}
+                  li Checkins: #{data.user.checkins.count}

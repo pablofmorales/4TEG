@@ -91,7 +91,7 @@ app.get('/user', loginRequired, function (req, res, next) {
         if (error) {
             res.send(error);
         } else {
-            res.send(data);
+            res.render('user', { title: 'User', data: data});
         }
     })
 });
