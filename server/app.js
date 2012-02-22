@@ -14,7 +14,7 @@ var config = {
     }
 }
 
-var foursquare = require("node-foursquare")(config);
+var foursquare = require("./lib/foursquare")(config);
 
 var express = require('express')
   , routes = require('./routes');
