@@ -55,7 +55,8 @@ app.get('/ok', function(req, res, next){
         if(error) {
             res.send("An error was thrown: " + error.message);
         }else {
-            res.send('it s work mother fucker');
+           res.send(accessToken); 
+           res.send('it s work mother fucker');
         }
   });
 });
