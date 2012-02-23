@@ -1,0 +1,4 @@
+{
+    "name": "foursquare",
+    "main": "node-foursquare.js"
+}
