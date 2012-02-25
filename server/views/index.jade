@@ -14,6 +14,6 @@ block content
             div(data-role="content")
                 div.ui-corner-all.ui-bar-c.ui-shadow(style="padding:.5em")
                     div#map_canvas(style="height:350px")
-                input.ui-shadow(type="button", data-icon="star", data-role="button", value="Check-in!", onclick="checkin('/explore')")
-                input.ui-shadow(type="button", data-icon="gear", data-role="button", value="My profile", onclick="checkin('/user')")
+                input.ui-shadow(type="button", data-icon="star", data-role="button", value="Explore", onclick="go('/explore')")
+                input.ui-shadow(type="button", data-icon="gear", data-role="button", value="My profile", onclick="go('/user')")
                 a(href="/logout", data-role="button") Logout

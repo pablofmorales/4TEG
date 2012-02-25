@@ -16,6 +16,11 @@ var config = {
 
 var foursquare = require("./lib/foursquare")(config);
 
+// Mongodb
+var mongo = require('mongoskin');
+var db = mongo.db('localhost:27017/4teg');
+var collection = db.collection('users');
+
 var express = require('express')
   , routes = require('./routes');
 
@@ -55,11 +60,11 @@ function loginRequired (req, res, next) {
 // Routes
 // ------
 
-app.get('/', loginRequired, function(req, res) {
+app.get('/', loginRequired, function (req, res) {
     res.render('index', { title: '4TEG' });
 });
 
-app.get('/login', function(req, res) {
+app.get('/login', function (req, res) {
     res.render('login', { title: 'Login',
                           url: foursquare.getAuthClientRedirectUrl()})
 });
@@ -74,25 +79,61 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('/foursquare', function (req, res, next) {
-    foursquare.getAccessToken({
-        code: req.query.code
-    }, function (error, accessToken) {
-        if (error) {
-            res.send("An error was thrown: " + error.message);
-        } else {
-            req.session.accessToken = accessToken; // accessToken to session
-            res.redirect('/');
-        }
+    foursquare.getAccessToken({code: req.query.code},
+        function(error, accessToken) {
+            if (error) {
+                res.send("An error was thrown: " + error.message);
+            } else {
+                req.session.accessToken = accessToken; // to session
+
+                // Save user data
+                foursquare.Users.getUser('self', accessToken,
+                    function (error, data) {
+                        if (error) {
+                            res.send(error);
+                        } else {
+                            req.session.userId = data.user.id; // to session
+                            saveUserData(data);
+                            res.redirect('/');
+                        }
+                });
+            }
     });
 });
 
+function saveUserData(data) {
+    // Insert or Update user data
+    collection.findOne({'data.id': data.user.id},
+        function(error, user) {
+            if (error) {
+                res.send(error);
+            }
+            now = new Date().getTime();
+            if (user) {
+                // update
+                user.lastAccess = now;
+                user.data = data.user;
+                collection.update({_id: user._id}, user)
+            } else {
+                // insert
+                collection.save({ lastAccess: now,
+                                  data: data.user });
+            }
+    });
+}
+
 app.get('/user', loginRequired, function (req, res, next) {
-    foursquare.Users.getUser('self', req.session.accessToken, function (error, data) {
-        if (error) {
-            res.send(error);
-        } else {
-            res.render('user', { title: 'User', data: data});
-        }
+    collection.findOne({'data.id': req.session.userId},
+        function(error, user) {
+            if (error) {
+                res.send(error);
+            }
+            if (user) {
+                var lastAccess = (new Date(user.lastAccess)).toLocaleString();
+                res.render('user', { title: 'User',
+                                     lastAccess: lastAccess,
+                                     user: user.data });
+            }
     })
 });
 
@@ -105,21 +146,22 @@ app.get('/explore', loginRequired, function (req, res, next) {
             if (error) {
                 res.send(error);
             } else {
-                res.render('explore', { title: 'Explore', data: data.groups[0]  });
+                res.render('explore', { title: 'Explore',
+                                        data: data.groups[0]  });
             }
     })
 });
 
 app.get('/checkin', loginRequired, function (req, res, next) {
     var venueId = req.query.id;
-    
     var params = {};
     foursquare.Checkin.add(venueId, params, req.session.accessToken,
         function (error, data) {
             if (error) {
                 res.send(error);
             } else {
-                res.render('checkinResult', { title: 'Checkin Result', data: data.groups[0]  });
+                res.render('checkinResult', { title: 'Checkin Result',
+                                              data: data.groups[0]  });
             }
     })
 });
@@ -138,5 +180,4 @@ app.get('/venue', loginRequired, function (req, res, next) {
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-
 

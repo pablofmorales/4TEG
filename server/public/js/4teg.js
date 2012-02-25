@@ -45,9 +45,12 @@ function initialize() {
 
 }
 
-function checkin(url) {
-    if (latitude && longitude) {
+function go(url) {
+    if (url == '/explore' && latitude && longitude) {
         location.href = url + '?lat=' + latitude + '&lng=' + longitude;
+    }
+    else {
+        location.href = url;
     }
 }
 

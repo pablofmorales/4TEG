@@ -9,11 +9,13 @@ block content
 
         div
             div(style="padding:0 10px 10px 10px;float:left")
-                img(src="#{data.user.photo}")
+                img(src="#{user.photo}")
             div(style="margin-left:108px")
-                h2(style="margin-bottom:.5em") #{data.user.firstName} #{data.user.lastName}
-                span #{data.user.homeCity}
+                h2(style="margin-bottom:.5em") #{user.firstName} #{user.lastName}
+                span #{user.homeCity}
                 ul
-                  li Badges: #{data.user.badges.count}
-                  li Mayorships: #{data.user.mayorships.count}
-                  li Checkins: #{data.user.checkins.count}
+                  li Badges: #{user.badges.count}
+                  li Mayorships: #{user.mayorships.count}
+                  li Checkins: #{user.checkins.count}
+                  li 
+                    strong Last Access: #{lastAccess}
